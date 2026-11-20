@@ -1,0 +1,22 @@
+class NameResolver:
+    def __init__(self):
+        self.records = {
+            "example.com": "93.184.216.34",
+            "openai.com": "104.18.33.45",
+            "google.com": "142.250.183.14"
+        }
+
+    def resolve(self, hostname):
+        return self.records.get(hostname)
+
+resolver = NameResolver()
+
+for name in ["example.com", "openai.com",
+             "google.com", "not_exist.com"]:
+    ip = resolver.resolve(name)
+
+    if ip:
+        print(name, "-> resolves to ->", ip)
+    else:
+        print(name, "does not exist")
+
