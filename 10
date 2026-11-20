@@ -1,0 +1,128 @@
+ 
+# Server Program
+
+import socket
+import threading
+def handle_client(client, clients):
+    while True:
+        try:
+            message = client.recv(1024).decode()
+            if not message:
+                break
+
+            print("Received:", message)
+            broadcast(message, client, clients)
+        except:
+            break
+
+    client.close()
+    if client in clients:
+        clients.remove(client)
+
+def broadcast(message, sender, clients):
+    for client in clients[:]:
+        if client != sender:
+            try:
+                client.send(message.encode())
+            except:
+                client.close()
+                if client in clients:
+                    clients.remove(client)
+
+def main():
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind(("127.0.0.1", 12345))
+    server.listen(5)
+
+    print("Server started. Waiting for clients...")
+
+    clients = []
+    while True:
+        client, address = server.accept()
+        print("Client connected:", address)
+        clients.append(client)
+
+        threading.Thread(
+            target=handle_client,
+            args=(client, clients),
+            daemon=True
+        ).start()
+
+if __name__ == "__main__":
+    main()
+
+
+
+# Client1 Program
+
+import socket
+import threading
+def receive_messages(client):
+    while True:
+        try:
+            message = client.recv(1024).decode()
+            if not message:
+                break
+            print("\nReceived:", message)
+        except:
+            break
+
+def main():
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.connect(("127.0.0.1", 12345))
+
+    threading.Thread(
+        target=receive_messages,
+        args=(client,),
+        daemon=True
+    ).start()
+
+    while True:
+        message = input("Enter message: ")
+
+        if message.lower() == "exit":
+            break
+
+        client.send(message.encode())
+
+    client.close()
+
+if __name__ == "__main__":
+    main()
+
+# Client2 Program
+
+import socket
+import threading
+def receive_messages(client):
+    while True:
+        try:
+            message = client.recv(1024).decode()
+            if not message:
+                break
+            print("\nReceived:", message)
+        except:
+            break
+
+def main():
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.connect(("127.0.0.1", 12345))
+
+    threading.Thread(
+        target=receive_messages,
+        args=(client,),
+        daemon=True
+    ).start()
+
+    while True:
+        message = input("Enter message: ")
+        if message.lower() == "exit":
+            break
+        client.send(message.encode())
+
+    client.close()
+
+if __name__ == "__main__":
+    main()
+
+
