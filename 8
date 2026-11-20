@@ -1,0 +1,30 @@
+def to_seconds(t):
+    m, s = map(int, t.split(":"))
+    return m * 60 + s
+
+def to_time(t):
+    t = int(t) % 3600
+    return f"{t // 60:02d}:{t % 60:02d}"
+
+server = input("Enter Server Time (mm:ss): ")
+c1 = input("Enter Client 1 Time (mm:ss): ")
+c2 = input("Enter Client 2 Time (mm:ss): ")
+
+s = to_seconds(server)
+t1 = to_seconds(c1)
+t2 = to_seconds(c2)
+
+d1 = t1 - s
+d2 = t2 - s
+avg = (d1 + d2) // 2
+
+print("Server Clock =", server)
+print("Client Clock1 =", c1)
+print("Client Clock2 =", c2)
+print("t1 - s =", d1)
+print("t2 - s =", d2)
+print("Average =", avg)
+
+print("Synchronized Server Clock =", to_time(s + avg))
+print("Synchronized Client1 Clock =", to_time(t1 + avg - d1))
+print("Synchronized Client2 Clock =", to_time(t2 + avg - d2))
