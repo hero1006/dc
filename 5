@@ -1,0 +1,26 @@
+n = 5
+active = [True] * n
+
+failed = n - 1
+active[failed] = False
+
+print("Process", failed, "fails")
+print("Election initiated by Process 2")
+
+for i in range(2, n - 1):
+    print("Election message passed to Process", i + 1)
+
+coordinator = -1
+
+for i in range(n - 1, -1, -1):
+    if active[i]:
+        coordinator = i
+        break
+
+print("Process", coordinator, "becomes coordinator")
+
+for i in range(n):
+    if active[i]:
+        print("Coordinator message sent to Process", i)
+print("End of Election")
+
