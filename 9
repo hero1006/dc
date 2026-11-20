@@ -1,0 +1,33 @@
+# WAP to implement Critical Section using Mutual Exclusion
+import time
+import msvcrt
+
+cs = 0
+pro = 0
+run = 5.0
+t1 = time.time() - 5
+key = 'a'
+
+print("Press a key (except q) to enter a process:")
+print("Press q at any time to exit")
+
+while key != 'q':
+    if msvcrt.kbhit():
+        key = msvcrt.getch().decode(errors="ignore")
+
+        if key != 'q':
+            if cs != 0:
+                t2 = time.time()
+
+                if t2 - t1 > run:
+                    print(f"Process {pro - 1} exited critical section.")
+                    cs = 0
+
+            if cs == 0:
+                print(f"Process {pro} entered critical section.")
+                cs = 1
+                pro += 1
+                t1 = time.time()
+            else:
+                print("Error: Another process is currently executing!")
+
