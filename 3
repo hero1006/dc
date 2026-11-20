@@ -1,0 +1,36 @@
+#Server Program
+
+from xmlrpc.server import SimpleXMLRPCServer
+server = SimpleXMLRPCServer(("localhost", 8000))
+
+def add(a, b):
+    return a + b
+
+def subtract(a, b):
+    return a - b
+
+def multiply(a, b):
+    return a * b
+
+def divide(a, b):
+    return a / b if b != 0 else "Cannot divide by zero"
+
+server.register_function(add, "add")
+server.register_function(subtract, "subtract")
+server.register_function(multiply, "multiply")
+server.register_function(divide, "divide")
+
+print("Server is running...")
+server.serve_forever()
+
+
+#client program
+import xmlrpc.client
+
+proxy = xmlrpc.client.ServerProxy("http://localhost:8000")
+
+print("Addition:", proxy.add(5, 3))
+print("Subtraction:", proxy.subtract(10, 3))
+print("Multiplication:", proxy.multiply(2, 2))
+print("Division:", proxy.divide(8, 2))
+
