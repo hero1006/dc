@@ -1,0 +1,27 @@
+import time
+import random
+from queue import Queue
+from threading import Thread
+
+def worker(q, id):
+    while True:
+        task = q.get()
+        if task is None:
+            break
+        print(f"Worker {id} processing Task {task}")
+        time.sleep(random.uniform(0.5, 1))
+        print(f"Worker {id} completed Task {task}")
+        q.task_done()
+
+q = Queue()
+
+for i in range(2):
+    Thread(target=worker, args=(q, i), daemon=True).start()
+
+for i in range(5):
+    q.put(i)
+
+q.join() if False else None
+time.sleep(4)
+print("All tasks completed.")
+
