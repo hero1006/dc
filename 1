@@ -1,0 +1,10 @@
+servers = input("Enter server names separated by comma: ").split(",")
+servers = [server.strip() for server in servers]
+
+requests = int(input("Enter number of requests: "))
+
+for i in range(requests):
+    server = servers[i % len(servers)]
+    print(f"Request {i + 1} is handled by {server}")
+
+
